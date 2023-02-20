@@ -1,0 +1,45 @@
+﻿@model IEnumerable<TN218.Models.GioHang>
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Breadcrumbs -->
+<div class="breadcrumbs p-3">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="bread-inner">
+					<ul class="bread-list">
+						<li><a href="/Home/Index">Trang chủ<i class="ti-arrow-right"></i></a></li>
+						<li>Giỏ hàng<i class="ti-arrow-right"></i></li>
+						<li class="active"><a href="/Cart/MyItems">Sản phẩm của tôi</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<h4 class="ps-2">Giỏ hàng</h4>
+</div>
+<div id="Cart_full_container">
+	@await Html.PartialAsync("_Cart_Full", Model)
+</div>
+
+<script>
+	function remove_gh(target){
+		$.ajax({
+			type: 'POST',
+			url: '/Cart/RemoveCartItem',
+			data: {magh: target.dataset.magh}
+		}).done((data)=>{
+			$('#Cart_full_container').html(data)
+			$.ajax({
+					type: 'post',
+					url: '/Cart/get_cart'
+				}).done((data)=>{
+				$('#cart_container').html(data);
+			})
+		})
+	}
+</script>

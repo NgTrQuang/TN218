@@ -1,0 +1,21 @@
+﻿@model List<TN218.Models.GioHang>
+@if (Context.Session.GetString("CurrentUserID") != null)
+{
+	<div class="sinlge-bar shopping">
+		<a href="/Cart/MyItems" class="single-icon">
+			<i class="fas fa-shopping-cart"></i>
+			<span class="total-count">@Model.Count()</span>
+		</a>
+	</div>
+}
+else
+{
+	<div class="sinlge-bar shopping">
+		<a href="#" class="single-icon"><i class="fas fa-shopping-cart"></i></a>
+		<div class="shopping-item">
+			<div class="d-flex">
+				<div class="mx-auto">Đăng nhập đế sử dụng giỏ hàng</div>
+			</div>
+		</div>
+	</div>
+}

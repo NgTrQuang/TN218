@@ -1,0 +1,99 @@
+﻿@model IEnumerable<TN218.Models.GioHang>
+@using TN218.Models;
+@{
+	ViewData["Title"] = "Thanh toán";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="shop checkout section">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 col-12">
+				<div class="checkout-form">
+					<h2>Thông tin cần thiết</h2>
+					<p>Đăng nhập để thanh toán nhanh hơn</p>
+					<!-- Form -->
+					@{
+						HoaDonModel hd = (HoaDonModel)ViewData["info"];
+					}
+					<partial name="_Info" model="hd" />
+				</div>
+			</div>
+			<div class="col-lg-4 col-12">
+				<div class="order-details">
+					<partial name="_Cart_checkout" model="Model" />
+					<!--/ End Order Widget -->
+					<!-- Order Widget -->
+					<div class="single-widget">
+						<h2>Phương thức thanh toán</h2>
+						<div class="content px-5 pt-2">
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="payment" id="cod" checked>
+								<label class="form-check-label" for="cod">
+									Thanh toán khi nhận hàng
+								</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="payment" id="zalopay">
+								<label class="form-check-label" for="zalopay">
+									Ví ZaloPay
+								</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="payment" id="bank">
+								<label class="form-check-label" for="bank">
+									Thẻ tín dụng
+								</label>
+							</div>
+						</div>
+					</div>
+					<!-- Button Widget -->
+					<div class="single-widget get-button">
+						<div class="content">
+							<button class="btn" onclick="checkout_wallet()" id="confirm_checkout">Thanh toán</button>
+						</div>
+						<script>
+							$('input[name="payment"]').click((e) => {
+								$('#payment_method').val(e.target.id)
+							})
+							function checkout_wallet() {
+								var hotlot = $('#HoLot').val();
+								var ten = $('#Ten').val();
+								var email = $('#Email').val();
+								var sdt = $('#SoDienThoai').val();
+								var listgh = $('#GioHangs').val();
+								var payment = $('#payment_method').val();
+								if(!hotlot || !ten || !email || !sdt){
+									Swal.fire({
+										title: 'Thông báo',
+										text: "Xin điền đầy đủ thông tin cần thiết!",
+										icon: 'error',
+									})
+									
+								}else{
+									$.ajax({
+										'type': 'POST',
+										'url': '/CheckOut/CheckoutWallet',
+										'data': {
+											'listgh': listgh,
+											'payment': payment,
+										}
+									}).done(data => {
+										if (JSON.parse(data).payment != undefined) {
+											var url = "/Checkout/Receipt?Holot=" + hotlot + "&Ten=" + ten + "&Email=" + email + "&SoDienThoai=" + sdt + "&Thanhtoan=" + payment + "&GioHangs=" + listgh
+											window.location.replace(url);
+										} else {
+											window.open(JSON.parse(data).order_url, '_blank').focus();
+											var url = "/Checkout/Receipt?Holot=" + hotlot + "&Ten=" + ten + "&Email=" + email + "&SoDienThoai=" + sdt + "&Thanhtoan=" + payment + "&GioHangs=" + listgh
+											window.location.replace(url);
+										}
+									})
+								}
+							}
+						</script>
+					</div>
+					<!--/ End Button Widget -->
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

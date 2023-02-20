@@ -1,0 +1,49 @@
+﻿@model TN218.Models.HoaDonModel
+<form class="form" id="info">
+	@*method="post" action="Receipt"*@
+	<div class="row">
+		<div class="col-lg-6 col-md-6 col-12">
+			<div class="form-group">
+				<label>Họ lót<span>*</span></label>
+				<input type="text" id="HoLot" name="HoLot" placeholder="Họ lót" value="@Model?.Holot" required>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-6 col-12">
+			<div class="form-group">
+				<label>Tên<span>*</span></label>
+				<input type="text" id="Ten" name="Ten" placeholder="Tên" value="@Model?.Ten" required>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-6 col-12">
+			<div class="form-group">
+				<label>Số điện thoại<span>*</span></label>
+				<input type="text" id="SoDienThoai" name="SoDienThoai" placeholder="Số điện thoại" value="@Model?.SoDienThoai" required>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-6 col-12">
+			<div class="form-group">
+				<label>Email</label>
+				<input type="email" id="Email" name="Email" placeholder="Email" value="@Model?.Email" required>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-6 col-12 d-none">
+			<div class="form-group">
+				<label>Giỏ hàng</label>
+				@{
+					string vl = Context.Request.Query["listgh"].ToString();
+					if (Model != null && Model.GioHangs != "") vl = Model.GioHangs;
+				}
+				<input type="text" id="GioHangs" name="GioHangs" placeholder="Giỏ hàng" value="@vl">
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-6 col-12 d-none">
+			<div class="form-group">
+				<label>Thanh toán</label>
+				<input id="payment_method" value="cod" type="text" name="Thanhtoan" placeholder="Giỏ hàng">
+			</div>
+		</div>
+		<div class="col-12">
+			<a href="/Login/Register" class="text-primary text-decoration-none">Đăng kí tài khoản</a>
+		</div>
+	</div>
+</form>
